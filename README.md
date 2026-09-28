@@ -54,7 +54,7 @@ Ensure you have Python 3.10 or higher installed.
 Clone this repository and set up a virtual environment:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pulse-retention-intelligence.git
+git clone https://github.com/Devansh1623/pulse-retention-intelligence.git
 cd pulse-retention-intelligence
 
 # Create and activate virtual environment
