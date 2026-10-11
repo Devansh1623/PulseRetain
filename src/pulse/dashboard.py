@@ -889,7 +889,13 @@ elif "Who are the at-risk accounts?" in nav_page:
         page = st.number_input("Page", min_value=1, max_value=total_pages, value=1)
         page_df = filtered.iloc[(page - 1) * page_size: page * page_size][available_display]
 
-        # Format column headers and display with native column_config
+        # Ensure probability column is in 0..1 scale for ProgressColumn
+        table_df = page_df.copy()
+        if "churn_probability" in table_df.columns:
+            # If values were > 1, normalize, otherwise keep in 0..1
+            if table_df["churn_probability"].max() > 1.0:
+                table_df["churn_probability"] = table_df["churn_probability"] / 100.0
+
         column_config = {
             "subscriber_id": st.column_config.TextColumn("Subscriber ID", width="medium"),
             "plan_tier": st.column_config.TextColumn("Plan"),
@@ -909,7 +915,7 @@ elif "Who are the at-risk accounts?" in nav_page:
             "churn_probability": st.column_config.ProgressColumn(
                 "Churn Prob",
                 help="Predicted probability of churning",
-                format="%.1f%%",
+                format="%.1f",
                 min_value=0.0,
                 max_value=1.0,
             ),
@@ -917,15 +923,16 @@ elif "Who are the at-risk accounts?" in nav_page:
         }
 
         # Filter config to only columns present
-        active_config = {k: v for k, v in column_config.items() if k in page_df.columns}
+        active_config = {k: v for k, v in column_config.items() if k in table_df.columns}
 
         st.dataframe(
-            page_df,
+            table_df,
             column_config=active_config,
             use_container_width=True,
             height=520,
             hide_index=True,
         )
+
 
         st.caption(f"Showing {len(filtered):,} accounts | Page {page}/{total_pages}")
 
