@@ -1,26 +1,26 @@
 """
-pulse/database.py — SQLite data warehouse access layer.
+pulse/database.py — Backend-agnostic data access router.
 
-This module owns all database interactions: schema creation, data loading,
-KPI queries, and view access. Dashboard and API layers import from here —
-they never construct SQL strings themselves.
+This module provides a unified interface for all database operations.
+The active backend (MongoDB Atlas or SQLite) is resolved once at import
+time from, in order of priority:
 
-Design choices:
-- SQLite for portability (no server, no credentials for a portfolio project).
-- All queries use parameterized statements (?  placeholders) to prevent
-  SQL injection even in a local context (good practice to demonstrate).
-- pandas read_sql_query is used for query results → DataFrame for easy
-  downstream use in the dashboard.
-- Connection is created per-call (not a long-lived singleton) to avoid
-  thread-safety issues when Streamlit runs in multi-threaded mode.
+  1. DB_BACKEND environment variable ("mongo" | "sqlite")
+  2. config/settings.yaml → database.backend
+  3. Default: "sqlite"
+
+Usage (no changes needed elsewhere):
+    from pulse.database import get_headline_kpis, load_subscribers, ...
+
+To switch to MongoDB Atlas:
+  • Set  DB_BACKEND=mongo  in your .env or Streamlit Cloud secrets
+  • Also set MONGODB_URI=mongodb+srv://...
 """
 
 from __future__ import annotations
 
-import sqlite3
-from contextlib import contextmanager
-from pathlib import Path
-from typing import Any, Generator
+import os
+from typing import Any
 
 import pandas as pd
 
@@ -28,6 +28,69 @@ from pulse.config import load_config
 from pulse.logging_setup import get_logger
 
 logger = get_logger(__name__)
+
+
+def _active_backend() -> str:
+    """Resolve the active backend: env var > config > default sqlite."""
+    env = os.environ.get("DB_BACKEND", "").lower().strip()
+    if env in ("mongo", "mongodb", "atlas"):
+        return "mongo"
+    if env == "sqlite":
+        return "sqlite"
+    try:
+        cfg = load_config()
+        return str(cfg.get("database", {}).get("backend", "sqlite")).lower()
+    except Exception:
+        return "sqlite"
+
+
+_BACKEND = _active_backend()
+logger.info("Database backend: %s", _BACKEND)
+
+if _BACKEND == "mongo":
+    # Import MongoDB implementations under the same public names
+    from pulse.mongo_database import (  # noqa: F401
+        get_db,
+        init_schema,
+        load_subscribers,
+        load_predictions,
+        get_headline_kpis,
+        get_kpi_by_plan,
+        get_kpi_by_region,
+        get_kpi_by_channel,
+        get_engagement_segments,
+        get_risk_watchlist,
+        get_cohort_retention,
+        get_arr_trend,
+        run_db_pipeline,
+        query_df as _mongo_query_df,
+    )
+
+    def query_df(sql_or_pipeline: Any, params: tuple = (), cfg: Any = None) -> pd.DataFrame:  # type: ignore[misc]
+        """Compatibility shim: accepts SQL strings (ARR trend) or Mongo pipelines.
+
+        The dashboard passes a SQL string for the ARR trend query; we
+        intercept that and call the native Mongo implementation instead.
+        """
+        # If it looks like a SQL string, route to the dedicated Mongo ARR helper
+        if isinstance(sql_or_pipeline, str):
+            return get_arr_trend(cfg)
+        # Otherwise it's already a Mongo pipeline
+        return _mongo_query_df(sql_or_pipeline, cfg=cfg)
+
+    def get_connection(cfg: Any = None):  # type: ignore[misc]
+        """Not available in Mongo backend — included for import compatibility only."""
+        raise NotImplementedError(
+            "get_connection() is a SQLite-only API. "
+            "Use get_db() for MongoDB Atlas access."
+        )
+
+else:
+    # ── SQLite backend (original implementation) ──────────────────────────
+    import sqlite3
+    from contextlib import contextmanager
+    from pathlib import Path
+    from typing import Generator
 
 
 # ---------------------------------------------------------------------------

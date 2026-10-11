@@ -11,6 +11,8 @@ xlsxwriter==3.2.0
 # SQLite ships with stdlib — no extra package needed
 # sqlalchemy for ORM utilities
 sqlalchemy==2.0.35
+# MongoDB Atlas driver
+pymongo[srv]==4.8.0
 
 # Config and CLI
 pyyaml==6.0.2

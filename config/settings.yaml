@@ -74,6 +74,12 @@ model:
     dropout_rate: 0.30
     learning_rate: 0.001
 
+# Database backend: "mongo" = MongoDB Atlas, "sqlite" = local SQLite file
+# Override at runtime with DB_BACKEND env var.
+database:
+  backend: "sqlite"   # change to "mongo" after adding MONGODB_URI to .env
+  mongo_db_name: "pulseretain"
+
 dashboard:
   host: "0.0.0.0"
   port: 8501
