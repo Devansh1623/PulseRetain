@@ -135,20 +135,33 @@ html, body, [class*="css"] {
 
 /* Sidebar Styling (Dark Forest) */
 [data-testid="stSidebar"] {
-    background: var(--sidebar-bg) !important;
-    border-right: none !important;
-    color: var(--color-text-inverse) !important;
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+[data-testid="stSidebar"] * {
+    font-family: var(--font-primary);
 }
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3, [data-testid="stSidebar"] p, 
-[data-testid="stSidebar"] span, [data-testid="stSidebar"] div {
+[data-testid="stSidebar"] span {
     color: var(--color-text-inverse) !important;
 }
 
 /* Sidebar Form elements */
-[data-testid="stSidebar"] .stSelectbox label { color: var(--color-text-inverse) !important; }
-[data-testid="stSidebar"] [data-baseweb="select"] { background-color: var(--sidebar-hover) !important; border-color: rgba(255,255,255,0.1) !important; }
-[data-testid="stSidebar"] [data-baseweb="select"] span { color: var(--color-text-inverse) !important; }
+[data-testid="stSidebar"] .stSelectbox label {
+    color: #9cb1a6 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+[data-testid="stSidebar"] [data-baseweb="select"] {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: var(--radius-md) !important;
+}
+[data-testid="stSidebar"] [data-baseweb="select"] span {
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+}
 
 /* Main content area */
 .main .block-container {
@@ -161,65 +174,68 @@ html, body, [class*="css"] {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 24px;
-    transition: all 0.3s ease;
+    padding: 22px 24px;
+    transition: all 0.25s ease;
     box-shadow: var(--shadow-sm);
-    min-height: 120px;
-    position: relative;
-    overflow: hidden;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .kpi-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-md);
-    border-color: rgba(180, 241, 5, 0.5); /* Lime hover border */
+    border-color: rgba(180, 241, 5, 0.6);
 }
 
 .kpi-label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: var(--color-text-secondary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 .kpi-value {
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 800;
     color: var(--color-text-primary);
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
 }
 .kpi-delta {
     display: inline-flex;
     align-items: center;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
     font-weight: 700;
-    margin-top: 10px;
-    background: var(--color-surface-2);
+    margin-top: 8px;
+    width: fit-content;
 }
 .kpi-delta.positive { color: #15803d; background: #DCFCE7; }
 .kpi-delta.negative { color: #b91c1c; background: #FEE2E2; }
 .kpi-delta.neutral  { color: var(--color-text-secondary); background: #F1F5F9; }
 
 .kpi-definition {
-    font-size: 11.5px;
+    font-size: 11px;
     color: var(--color-text-secondary);
-    margin-top: 14px;
-    line-height: 1.5;
+    margin-top: 10px;
+    line-height: 1.4;
+    border-top: 1px solid var(--color-border);
+    padding-top: 8px;
 }
 
 /* Insight callout */
 .insight-callout {
-    background: #072F1F; /* Forest medium */
+    background: #072F1F;
     color: #FFFFFF;
     border-radius: var(--radius-lg);
-    border-left: 4px solid var(--color-accent); /* Lime accent */
-    padding: 20px 24px;
-    margin: 24px 0;
-    font-size: 15px;
+    border-left: 4px solid var(--color-accent);
+    padding: 18px 22px;
+    margin: 20px 0;
+    font-size: 14.5px;
     font-weight: 500;
     line-height: 1.6;
     box-shadow: var(--shadow-md);
@@ -227,52 +243,82 @@ html, body, [class*="css"] {
 
 /* Section header */
 .section-header {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.025em;
     color: var(--color-text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 .section-sub {
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 500;
     color: var(--color-text-secondary);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     max-width: 800px;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 /* Navigation styling in Sidebar */
 [data-testid="stRadio"] > div {
-    gap: 8px !important;
+    gap: 6px !important;
 }
 [data-testid="stRadio"] > div > label {
     background: transparent !important;
-    border: none !important;
     border-radius: var(--radius-md) !important;
-    padding: 12px 16px !important;
+    padding: 10px 14px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
-    color: #879A91 !important; /* Muted sidebar text */
+    border: 1px solid transparent !important;
 }
 [data-testid="stRadio"] > div > label:hover {
-    background: var(--sidebar-hover) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+[data-testid="stRadio"] > div > label p,
+[data-testid="stRadio"] > div > label span {
+    color: #A3B8AD !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+[data-testid="stRadio"] > div > label:hover p,
+[data-testid="stRadio"] > div > label:hover span {
     color: #FFFFFF !important;
 }
-/* Active state for Streamlit radio in Sidebar */
-[data-testid="stRadio"] > div > label[data-baseweb="radio"] {
-    background: var(--color-accent) !important; /* Lime green */
-    color: #051C12 !important; /* Dark text on lime */
+
+/* Selected state for Sidebar radio */
+[data-testid="stRadio"] > div > label:has(input:checked) {
+    background: rgba(180, 241, 5, 0.15) !important;
+    border: 1px solid rgba(180, 241, 5, 0.4) !important;
+}
+[data-testid="stRadio"] > div > label:has(input:checked) p,
+[data-testid="stRadio"] > div > label:has(input:checked) span {
+    color: #B4F105 !important;
     font-weight: 700 !important;
 }
-[data-testid="stRadio"] > div > label[data-baseweb="radio"] div {
-    color: #051C12 !important; /* ensure inner text is dark */
+
+/* Form inputs in main content */
+.stTextInput input, .stNumberInput input {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid #D0D7D4 !important;
+    background-color: #FFFFFF !important;
+    color: #0B130F !important;
+}
+.stMultiSelect [data-baseweb="select"] {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid #D0D7D4 !important;
+    background-color: #FFFFFF !important;
+}
+.stMultiSelect [data-baseweb="tag"] {
+    background-color: #E2E8F0 !important;
+}
+.stMultiSelect [data-baseweb="tag"] span {
+    color: #0F172A !important;
 }
 
 /* Plotly chart containers */
+
 .stPlotlyChart { 
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -361,17 +407,16 @@ def load_predictions(model_name: str = "gradient_boost") -> pd.DataFrame:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def kpi_card(label: str, value: str, definition: str, delta: str = "", delta_dir: str = "neutral") -> None:
-    delta_html = ""
-    if delta:
-        delta_html = f'<div class="kpi-delta {delta_dir}">{delta}</div>'
-    st.markdown(f"""
-    <div class="kpi-card" role="region" aria-label="{label}: {value}">
-        <div class="kpi-label">{label}</div>
-        <div class="kpi-value">{value}</div>
-        {delta_html}
-        <div class="kpi-definition">{definition}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    delta_html = f'<div class="kpi-delta {delta_dir}">{delta}</div>' if delta else ""
+    card_html = (
+        f'<div class="kpi-card" role="region" aria-label="{label}: {value}">'
+        f'<div class="kpi-label">{label}</div>'
+        f'<div class="kpi-value">{value}</div>'
+        f'{delta_html}'
+        f'<div class="kpi-definition">{definition}</div>'
+        f'</div>'
+    )
+    st.markdown(card_html, unsafe_allow_html=True)
 
 
 def section_header(title: str, subtitle: str = "", icon: str = "") -> None:
@@ -844,16 +889,42 @@ elif "Who are the at-risk accounts?" in nav_page:
         page = st.number_input("Page", min_value=1, max_value=total_pages, value=1)
         page_df = filtered.iloc[(page - 1) * page_size: page * page_size][available_display]
 
-        st.dataframe(
-            page_df.style.format({
-                "churn_probability": "{:.1%}",
-                "arr_usd": "${:,.0f}",
-                "engagement_score": "{:.0f}",
-            }).background_gradient(
-                subset=["churn_probability"] if "churn_probability" in page_df.columns else [],
-                cmap="RdYlGn_r",
+        # Format column headers and display with native column_config
+        column_config = {
+            "subscriber_id": st.column_config.TextColumn("Subscriber ID", width="medium"),
+            "plan_tier": st.column_config.TextColumn("Plan"),
+            "region_code": st.column_config.TextColumn("Region"),
+            "industry_name": st.column_config.TextColumn("Industry"),
+            "tenure_months": st.column_config.NumberColumn("Tenure (mo)", format="%d"),
+            "engagement_score": st.column_config.ProgressColumn(
+                "Engagement",
+                help="Platform engagement score (0-100)",
+                format="%d",
+                min_value=0,
+                max_value=100,
             ),
-            use_container_width=True, height=500,
+            "payment_failures_12m": st.column_config.NumberColumn("Pay Failures", format="%d"),
+            "support_tickets_90d": st.column_config.NumberColumn("Tickets (90d)", format="%d"),
+            "arr_usd": st.column_config.NumberColumn("ARR", format="$%d"),
+            "churn_probability": st.column_config.ProgressColumn(
+                "Churn Prob",
+                help="Predicted probability of churning",
+                format="%.1f%%",
+                min_value=0.0,
+                max_value=1.0,
+            ),
+            "risk_tier": st.column_config.TextColumn("Risk Tier"),
+        }
+
+        # Filter config to only columns present
+        active_config = {k: v for k, v in column_config.items() if k in page_df.columns}
+
+        st.dataframe(
+            page_df,
+            column_config=active_config,
+            use_container_width=True,
+            height=520,
+            hide_index=True,
         )
 
         st.caption(f"Showing {len(filtered):,} accounts | Page {page}/{total_pages}")
