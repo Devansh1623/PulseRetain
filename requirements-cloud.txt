@@ -1,0 +1,24 @@
+# PulseRetain — Streamlit Cloud requirements
+# TensorFlow and Jupyter excluded (too heavy for cloud build).
+# The pre-trained model outputs (CSVs + SQLite DB) are committed directly.
+
+pandas==2.2.2
+numpy==1.26.4
+openpyxl==3.1.5
+
+sqlalchemy==2.0.35
+
+pyyaml==6.0.2
+click==8.1.7
+
+scipy==1.13.1
+scikit-learn==1.5.2
+xgboost==2.1.1
+
+streamlit==1.38.0
+plotly==5.24.1
+altair==5.4.1
+
+python-dotenv==1.0.1
+rich==13.8.1
+joblib==1.4.2
